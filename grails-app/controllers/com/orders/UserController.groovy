@@ -7,7 +7,7 @@ class UserController extends BaseController {
 
     private static final String ADMIN_LEVEL_CLEARANCE = "DREW"
 
-    void create() {
+    def create() {
         if (request.JSON.adminLevel != ADMIN_LEVEL_CLEARANCE) {
             render status: 404
             return
@@ -41,7 +41,7 @@ class UserController extends BaseController {
         render text: "Created user: $name"
     }
 
-    void delete() {
+    def delete() {
         if (request.JSON.adminLevel != ADMIN_LEVEL_CLEARANCE) {
             render status: 404
             return
@@ -61,7 +61,7 @@ class UserController extends BaseController {
         render text: "Deleted user: $name"
     }
 
-    void updateRoles() {
+    def updateRoles() {
         if (request.JSON.adminLevel != ADMIN_LEVEL_CLEARANCE) {
             render status: 404
             return
@@ -95,7 +95,7 @@ class UserController extends BaseController {
         render text: "Updated roles for user $id"
     }
 
-    void getRoles() {
+    def getRoles() {
         if (request.JSON.adminLevel != ADMIN_LEVEL_CLEARANCE) {
             render status: 404
             return

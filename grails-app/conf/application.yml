@@ -34,6 +34,7 @@ grails:
         username: "dcorlin"
         source: "orders" # pointing successfully to test db rn, fix to point to orders
         password: ""
+        databaseName: "orders"
     mime:
         disable:
             accept:

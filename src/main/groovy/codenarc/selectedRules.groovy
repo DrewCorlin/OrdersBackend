@@ -89,8 +89,10 @@ ruleset {
     InvertedIfElse
     LongLiteralWithLowerCaseL
     MethodParameterTypeRequired
-    MethodReturnTypeRequired
-    NoDef
+    MethodReturnTypeRequired {
+        doNotApplyToClassNames = "*Controller"
+    }
+    // NoDef // Would be nice for only arguments, but for controller methods and autowiring it's annoying
     NoJavaUtilDate
     NoTabCharacter
     ParameterReassignment

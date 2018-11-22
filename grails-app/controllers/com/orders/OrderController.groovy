@@ -3,7 +3,7 @@ package com.orders
 import grails.converters.JSON
 
 class OrderController extends BaseController {
-    void create() {
+    def create() {
         String label = request.JSON.label
         String customer = request.JSON.customer
         String description = request.JSON.description
@@ -16,7 +16,7 @@ class OrderController extends BaseController {
         render text: "Order created: $label"
     }
 
-    void delete() {
+    def delete() {
         String id = params.id
         Order order = Order.findById(id)
 
@@ -29,7 +29,7 @@ class OrderController extends BaseController {
         render text: "Order $id deleted"
     }
 
-    void getOrders() {
+    def getOrders() {
         List<Order> orders = Order.findAll()
         render orders.collect { Order order ->
             [
@@ -41,7 +41,7 @@ class OrderController extends BaseController {
         } as JSON
     }
 
-    void getOrder() {
+    def getOrder() {
         String id = params.id
         Order order = Order.get(id)
 
