@@ -3,7 +3,7 @@ package com.orders
 import grails.converters.JSON
 
 class MealController extends BaseController {
-    def create() {
+    void create() {
         String label = request.JSON.label
         String description = request.JSON.description
         Meal meal = new Meal(label: label, description: description)
@@ -15,7 +15,7 @@ class MealController extends BaseController {
         render text: "Meal created: $label"
     }
 
-    def delete() {
+    void delete() {
         String id = params.id
         Meal meal = Meal.findById(id)
 
@@ -28,7 +28,7 @@ class MealController extends BaseController {
         render text: "Meal $id deleted"
     }
 
-    def getMeals() {
+    void getMeals() {
         List<Meal> meals = Meal.findAll()
         render meals.collect { Meal meal ->
             [
@@ -39,7 +39,7 @@ class MealController extends BaseController {
         } as JSON
     }
 
-    def getMeal() {
+    void getMeal() {
         String id = params.id
         Meal meal = Meal.get(id)
 

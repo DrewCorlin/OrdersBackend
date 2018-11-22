@@ -13,4 +13,9 @@ class Order {
     String id
     Date lastUpdated
     Date dateCreated
+
+    @Override
+    String toString() {
+        return "[id: $id, label: $label, customer: $customer, description: $description]"
+    }
 }

@@ -3,13 +3,13 @@ package com.orders
 import grails.converters.JSON
 
 class BaseController {
-    def handleException(Exception e) {
+    void handleException(Exception e) {
         log.error "message='Unexpected server error'", e
         render status: 500, text: "Unexpected server error"
     }
 
     // Expects to be passed a validateable object
-    def handleValidationErrors(obj) {
+    void handleValidationErrors(Object obj) {
         Map response = [
             message: "Errors validating object ${obj.getClass()}",
             errors: [:]
@@ -18,8 +18,8 @@ class BaseController {
         try {
             obj.errors.allErrors.each {
                 response.errors << [
-                    field: it.getField(),
-                    value: it.getRejectedValue(),
+                    field: it.field,
+                    value: it.rejectedValue,
                     reason: it.code // Not sure if this is really what we want
                 ]
             }

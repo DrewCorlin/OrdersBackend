@@ -1,10 +1,14 @@
 package com.orders
 
 import grails.converters.JSON
+
 //TODO: Update roles to be real Role domain object, not string
 class UserController extends BaseController {
-    def create() {
-        if (request.JSON.adminLevel != "DREW") {
+
+    private static final String ADMIN_LEVEL_CLEARANCE = "DREW"
+
+    void create() {
+        if (request.JSON.adminLevel != ADMIN_LEVEL_CLEARANCE) {
             render status: 404
             return
         }
@@ -25,7 +29,7 @@ class UserController extends BaseController {
             return
         }
 
-        List<String> roleIds = roles.collect { Role role -> role.id }
+        List<String> roleIds = roles*.id
         User user = new User(name: name, password: password, roles: roleIds)
 
         if (!user.validate()) {
@@ -37,8 +41,8 @@ class UserController extends BaseController {
         render text: "Created user: $name"
     }
 
-    def delete() {
-        if (request.JSON.adminLevel != "DREW") {
+    void delete() {
+        if (request.JSON.adminLevel != ADMIN_LEVEL_CLEARANCE) {
             render status: 404
             return
         }
@@ -57,8 +61,8 @@ class UserController extends BaseController {
         render text: "Deleted user: $name"
     }
 
-    def updateRoles() {
-        if (request.JSON.adminLevel != "DREW") {
+    void updateRoles() {
+        if (request.JSON.adminLevel != ADMIN_LEVEL_CLEARANCE) {
             render status: 404
             return
         }
@@ -76,11 +80,11 @@ class UserController extends BaseController {
         List<Role> roles = Role.findAllByLabelInList(rolesRequested)
 
         if (!roles) {
-            render status: 400, text: "Must provide roles to update user with"
+            render status: 400, text: "Roles must not be empty"
             return
         }
 
-        user.roles = roles.collect { Role role -> role.id }
+        user.roles = roles*.id
 
         if (!user.validate()) {
             handleValidationErrors(user)
@@ -91,8 +95,8 @@ class UserController extends BaseController {
         render text: "Updated roles for user $id"
     }
 
-    def getRoles() {
-        if (request.JSON.adminLevel != "DREW") {
+    void getRoles() {
+        if (request.JSON.adminLevel != ADMIN_LEVEL_CLEARANCE) {
             render status: 404
             return
         }

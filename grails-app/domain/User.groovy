@@ -22,4 +22,9 @@ class User {
         // replace this with a hash function
         return newPass
     }
+
+    @Override
+    String toString() {
+        return "[id: $id, name: $name, roles: $roles, passwordSecured: $passwordSecured]"
+    }
 }
