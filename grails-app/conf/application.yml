@@ -2,7 +2,7 @@
 grails:
     profile: web
     codegen:
-        defaultPackage: orders.backend.clone
+        defaultPackage: com.orders
     gorm:
         reactor:
             # Whether to translate GORM events into Reactor events
@@ -28,6 +28,11 @@ endpoints:
 
 ---
 grails:
+    mongodb:
+        host: "localhost"
+        port: 27017
+        username: "dcorlin"
+        source: "orders" # pointing successfully to test db rn, fix to point to orders
     mime:
         disable:
             accept:
