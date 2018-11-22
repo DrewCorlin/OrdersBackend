@@ -33,6 +33,7 @@ grails:
         port: 27017
         username: "dcorlin"
         source: "orders" # pointing successfully to test db rn, fix to point to orders
+        password: ""
     mime:
         disable:
             accept:
