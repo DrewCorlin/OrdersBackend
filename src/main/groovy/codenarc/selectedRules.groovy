@@ -191,7 +191,9 @@ ruleset {
     SpaceAfterSwitch
     SpaceAfterWhile
     SpaceAroundClosureArrow
-    // SpaceAroundMapEntryColon // Change this to allow space after colons
+    SpaceAroundMapEntryColon {
+        characterAfterColonRegex = /\s/
+    }
     SpaceAroundOperator
     SpaceBeforeClosingBrace
     SpaceBeforeOpeningBrace
