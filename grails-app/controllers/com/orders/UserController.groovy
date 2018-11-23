@@ -4,7 +4,6 @@ import grails.converters.JSON
 
 //TODO: Update roles to be real Role domain object, not string
 class UserController extends BaseController {
-
     def create() {
         String name = request.JSON.name
 
@@ -36,7 +35,6 @@ class UserController extends BaseController {
     }
 
     def delete() {
-
         String name = request.JSON.name
         String hashedPass = User.hashPassword(request.JSON.password)
         User user = User.findByNameAndPasswordSecured(name, hashedPass)
@@ -52,7 +50,6 @@ class UserController extends BaseController {
     }
 
     def updateRoles() {
-
         String id = params.id
         User user = User.findById(id)
 
