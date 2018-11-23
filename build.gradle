@@ -76,11 +76,6 @@ tasks.withType(Test) {
     systemProperty "webdriver.gecko.driver", System.getProperty('webdriver.gecko.driver')
 }
 
-assets {
-    minifyJs = true
-    minifyCss = true
-}
-
 codenarc {
     toolVersion = "1.2.1"
     reportFormat = "html"
