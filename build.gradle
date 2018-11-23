@@ -93,3 +93,6 @@ codenarcMain {
 codenarcTest {
     configFile = file("src/main/groovy/codenarc/selectedTestRules.groovy")
 }
+
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
