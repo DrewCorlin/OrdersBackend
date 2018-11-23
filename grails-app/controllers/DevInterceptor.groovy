@@ -12,8 +12,8 @@ class DevInterceptor {
     }
 
     boolean before() {
-        println ADMIN_LEVEL_CLEARANCE
-        if (request.JSON.adminLevel != ADMIN_LEVEL_CLEARANCE) {
+        String requestAdminLevel = request.JSON.adminLevel ?: params.adminLevel
+        if (requestAdminLevel != ADMIN_LEVEL_CLEARANCE) {
             log.error "Invalid access attempted"
             return false
         }
