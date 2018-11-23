@@ -1,4 +1,4 @@
-package orders.backend.clone
+package com.orders
 
 class BootStrap {
 

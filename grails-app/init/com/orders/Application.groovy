@@ -1,4 +1,4 @@
-package orders.backend.clone
+package com.orders
 
 import grails.boot.GrailsApp
 import grails.boot.config.GrailsAutoConfiguration
