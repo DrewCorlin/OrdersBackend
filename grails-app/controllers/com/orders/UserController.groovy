@@ -5,13 +5,7 @@ import grails.converters.JSON
 //TODO: Update roles to be real Role domain object, not string
 class UserController extends BaseController {
 
-    private static final String ADMIN_LEVEL_CLEARANCE = "DREW"
-
     def create() {
-        if (request.JSON.adminLevel != ADMIN_LEVEL_CLEARANCE) {
-            render status: 404
-            return
-        }
         String name = request.JSON.name
 
         if (User.findByName(name)) {
@@ -42,10 +36,6 @@ class UserController extends BaseController {
     }
 
     def delete() {
-        if (request.JSON.adminLevel != ADMIN_LEVEL_CLEARANCE) {
-            render status: 404
-            return
-        }
 
         String name = request.JSON.name
         String hashedPass = User.hashPassword(request.JSON.password)
@@ -62,10 +52,6 @@ class UserController extends BaseController {
     }
 
     def updateRoles() {
-        if (request.JSON.adminLevel != ADMIN_LEVEL_CLEARANCE) {
-            render status: 404
-            return
-        }
 
         String id = params.id
         User user = User.findById(id)
@@ -96,10 +82,6 @@ class UserController extends BaseController {
     }
 
     def roles() {
-        if (request.JSON.adminLevel != ADMIN_LEVEL_CLEARANCE) {
-            render status: 404
-            return
-        }
         List<Role> roles = Role.findAll()
         render roles.collect { Role role ->
             [
