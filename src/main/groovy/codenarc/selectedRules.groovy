@@ -323,7 +323,9 @@ ruleset {
     PackageName
     PackageNameMatchesFilePath
     ParameterName
-    PropertyName
+    PropertyName {
+        regex = /[a-zA-Z][a-zA-Z0-9_]*/
+    }
     VariableName
 
     // rulesets/security.xml
