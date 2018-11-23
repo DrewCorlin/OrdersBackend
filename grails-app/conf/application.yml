@@ -29,7 +29,7 @@ endpoints:
 ---
 grails:
     mongodb:
-        url: '${mongoURI}'
+        url: '${MONGODB_URI}'
     mime:
         disable:
             accept:
