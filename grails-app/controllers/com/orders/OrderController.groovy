@@ -29,7 +29,7 @@ class OrderController extends BaseController {
         render text: "Order $id deleted"
     }
 
-    def getOrders() {
+    def orders() {
         List<Order> orders = Order.findAll()
         render orders.collect { Order order ->
             [
@@ -41,7 +41,7 @@ class OrderController extends BaseController {
         } as JSON
     }
 
-    def getOrder() {
+    def order() {
         String id = params.id
         Order order = Order.get(id)
 

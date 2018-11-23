@@ -12,7 +12,7 @@ class BaseController {
     def handleValidationErrors(Object obj) {
         Map response = [
             message: "Errors validating object ${obj.getClass()}",
-            errors: [:]
+            errors: []
         ]
         // Extra safety to still let user know that validation failed in some way
         try {

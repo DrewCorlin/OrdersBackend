@@ -1,6 +1,10 @@
 package com.orders
 
 class Meal {
+    static constraints = {
+        description nullable: true
+    }
+
     String label
     String description
 

@@ -83,14 +83,13 @@ assets {
 
 codenarc {
     toolVersion = "1.2.1"
-    configFile = file("src/main/groovy/codenarc/selectedRules.groovy")
     reportFormat = "html"
 }
 
-// codenarcMain {
-//     configFile file('')
-// }
+codenarcMain {
+    configFile = file("src/main/groovy/codenarc/selectedRules.groovy")
+}
 
-// codenarcTest {
-
-// }
+codenarcTest {
+    configFile = file("src/main/groovy/codenarc/selectedTestRules.groovy")
+}

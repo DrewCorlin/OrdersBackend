@@ -10,19 +10,19 @@ class UrlMappings {
         }
 
         "/orders" (controller: "order") {
-            action = [GET: "getOrders", POST: "create"]
+            action = [GET: "orders", POST: "create"]
         }
 
         "/order/$id" (controller: "order") {
-            action = [GET: "getOrder", DELETE: "delete"]
+            action = [GET: "order", DELETE: "delete"]
         }
 
         "/meals" (controller: "meal") {
-            action = [GET: "getMeals", POST: "create"]
+            action = [GET: "meals", POST: "create"]
         }
 
         "/meal/$id" (controller: "meal") {
-            action = [GET: "getMeal", DELETE: "delete"]
+            action = [GET: "meal", DELETE: "delete"]
         }
 
         "/user" (controller: "user") {
@@ -30,7 +30,7 @@ class UrlMappings {
         }
 
         "/user/roles" (controller: "user") {
-            action = [GET: "getRoles"]
+            action = [GET: "roles"]
         }
 
         "/user/$id/roles" (controller: "user") {

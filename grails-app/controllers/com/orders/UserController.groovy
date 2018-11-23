@@ -95,7 +95,7 @@ class UserController extends BaseController {
         render text: "Updated roles for user $id"
     }
 
-    def getRoles() {
+    def roles() {
         if (request.JSON.adminLevel != ADMIN_LEVEL_CLEARANCE) {
             render status: 404
             return

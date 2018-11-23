@@ -28,7 +28,7 @@ class MealController extends BaseController {
         render text: "Meal $id deleted"
     }
 
-    def getMeals() {
+    def meals() {
         List<Meal> meals = Meal.findAll()
         render meals.collect { Meal meal ->
             [
@@ -39,7 +39,7 @@ class MealController extends BaseController {
         } as JSON
     }
 
-    def getMeal() {
+    def meal() {
         String id = params.id
         Meal meal = Meal.get(id)
 
