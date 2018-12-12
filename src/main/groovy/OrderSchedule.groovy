@@ -15,7 +15,6 @@ class OrderSchedule implements Validateable {
         [BREAKFAST, LUNCH, DINNER] as Set,
     ]
 
-    // TODO: Figure out why I can't create a local Closure or generator method for validator Closure
     static constraints = {
         sunday nullable: true, minSize: 1, maxSize: 1, inList: [[DINNER] as Set]
         monday nullable: true, minSize: 1, maxSize: 3, inList: NORMAL_DAY_OPTIONS
