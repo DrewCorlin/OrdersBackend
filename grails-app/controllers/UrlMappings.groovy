@@ -14,7 +14,7 @@ class UrlMappings {
         }
 
         "/orders/schedule"(controller: "order") {
-            actiong = [POST: "scheduleOrders"]
+            action = [POST: "scheduleOrders"]
         }
 
         "/order/$id" (controller: "order") {

@@ -2,7 +2,8 @@ package com.orders
 
 import com.orders.embedded.OrderSchedule
 
-class RecurringOrder extends Order {
+// TODO: Make unique with customer
+class RecurringOrder {
     static embedded = ['orderSchedule']
 
     static constraints = {
@@ -13,9 +14,17 @@ class RecurringOrder extends Order {
             }
             return val?.validate() ?: false
         }
+        description nullable: true
     }
 
+    String label
+    String customer
+    String description
     OrderSchedule orderSchedule
+
+    String id
+    Date lastUpdated
+    Date dateCreated
 
     Map toMap() {
         // TODO: Don't add fields if they have null values

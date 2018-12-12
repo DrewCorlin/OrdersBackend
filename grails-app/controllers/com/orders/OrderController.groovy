@@ -5,6 +5,17 @@ import grails.converters.JSON
 import com.orders.embedded.OrderSchedule
 
 class OrderController extends BaseController {
+
+    private static final Map<Integer, String> DAYS = [
+        1: 'sunday',
+        2: 'monday',
+        3: 'tuesday',
+        4: 'wednesday',
+        5: 'thursday',
+        6: 'friday',
+        7: 'saturday'
+    ]
+
     def create() {
         String label = request.JSON.label
         String customer = request.JSON.customer
@@ -33,14 +44,34 @@ class OrderController extends BaseController {
 
     def orders() {
         List<Order> orders = Order.findAll()
-        render orders.collect { Order order ->
+
+        String day = DAYS[new Date()[Calendar.DAY_OF_WEEK]]
+
+        String currentMeal = getCurrentMeal()
+
+        List<RecurringOrder> recurringOrders = RecurringOrder.createCriteria().list {
+            eq "orderSchedule.$day", currentMeal
+        }
+
+        List<Map> response = orders.collect { Order order ->
             [
                 id: order.id,
                 label: order.label,
                 customer: order.customer,
                 description: order.description
             ]
-        } as JSON
+        }
+
+        recurringOrders.each { RecurringOrder ro ->
+            response << [
+                id: ro.id,
+                label: ro.label,
+                customer: ro.customer,
+                description: ro.description
+            ]
+        }
+
+        render response as JSON
     }
 
     def order() {
@@ -89,5 +120,9 @@ class OrderController extends BaseController {
         ro.save(flush: true, failOnError: true)
 
         render text: "Order schedule created: $label"
+    }
+
+    private String getCurrentMeal() {
+        return OrderSchedule.BREAKFAST
     }
 }
