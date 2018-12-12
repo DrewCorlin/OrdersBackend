@@ -22,7 +22,7 @@ class OrderSchedule implements Validateable {
         tuesday nullable: true, minSize: 1, maxSize: 3, inList: NORMAL_DAY_OPTIONS
         wednesday nullable: true, minSize: 1, maxSize: 3, inList: NORMAL_DAY_OPTIONS
         thursday nullable: true, minSize: 1, maxSize: 3, inList: NORMAL_DAY_OPTIONS
-        friday vnullable: true, minSize: 1, maxSize: 1, inList: [[BREAKFAST] as Set]
+        friday nullable: true, minSize: 1, maxSize: 1, inList: [[BREAKFAST] as Set]
     }
 
     Set<String> sunday
