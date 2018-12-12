@@ -17,8 +17,19 @@ class RecurringOrder extends Order {
 
     OrderSchedule orderSchedule
 
+    Map toMap() {
+        // TODO: Don't add fields if they have null values
+        return [
+            id: id,
+            label: label,
+            customer: customer,
+            description: description,
+            orderSchedule: orderSchedule.toString()
+        ]
+    }
+
     @Override
     String toString() {
-        return "[id: $id, label: $label, customer: $customer, description: $description, orderSchedule: ${orderSchedule.toString()}]"
+        return toMap().toMapString()
     }
 }
