@@ -264,7 +264,7 @@ ruleset {
     MisorderedStaticImports
     NoWildcardImports
     UnnecessaryGroovyImport
-    UnusedImport
+    // UnusedImport // To allow Ignore and IgnoreRest annotations to stay there for easy use
 
     // rulesets/jdbc.xml
     DirectConnectionManagement

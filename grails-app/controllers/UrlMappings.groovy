@@ -13,6 +13,10 @@ class UrlMappings {
             action = [GET: "orders", POST: "create"]
         }
 
+        "/orders/schedule"(controller: "order") {
+            actiong = [POST: "scheduleOrders"]
+        }
+
         "/order/$id" (controller: "order") {
             action = [GET: "order", DELETE: "delete"]
         }

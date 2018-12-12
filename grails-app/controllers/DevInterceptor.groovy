@@ -3,7 +3,6 @@ package com.orders
 import org.springframework.beans.factory.annotation.Value
 
 class DevInterceptor {
-
     @Value('${app.environment.adminClearanceLevel}')
     String ADMIN_LEVEL_CLEARANCE
 

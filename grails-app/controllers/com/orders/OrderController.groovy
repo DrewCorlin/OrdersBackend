@@ -2,6 +2,8 @@ package com.orders
 
 import grails.converters.JSON
 
+import com.orders.embedded.OrderSchedule
+
 class OrderController extends BaseController {
     def create() {
         String label = request.JSON.label
@@ -58,5 +60,40 @@ class OrderController extends BaseController {
         ]
 
         render orderMap as JSON
+    }
+
+    def scheduleOrders() {
+        String label = request.JSON.label
+        String customer = request.JSON.customer
+        String description = request.JSON.description
+        Map<String, Set<String>> schedule = request.JSON.schedule
+
+        RecurringOrder ro = new RecurringOrder([
+            label: label,
+            customer: customer
+        ])
+
+        if (description) {
+            ro.description = description
+        }
+
+        if (schedule) {
+            ro.orderSchedule = new OrderSchedule(schedule)
+        }
+
+        if (!ro.validate()) {
+            handleValidationErrors(ro)
+            return
+        }
+
+        // TODO: Figure out why the above call doesn't deep validate
+        if (ro.orderSchedule && !ro.orderSchedule.validate()) {
+            handleValidationErrors(ro.orderSchedule)
+            return
+        }
+
+        ro.save(flush: true, failOnError: true)
+
+        render text: "Order schedule created: $label"
     }
 }

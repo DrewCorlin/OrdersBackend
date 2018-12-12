@@ -1,10 +1,18 @@
 package com.orders
 
 import grails.testing.web.controllers.ControllerUnitTest
-import grails.testing.gorm.DomainUnitTest
+import grails.testing.gorm.DataTest
 import spock.lang.Specification
+import spock.lang.IgnoreRest
 
-class OrderControllerSpec extends Specification implements ControllerUnitTest<OrderController>, DomainUnitTest<Order> {
+import com.orders.embedded.OrderSchedule
+
+class OrderControllerSpec extends Specification implements ControllerUnitTest<OrderController>, DataTest {
+
+    void setupSpec() {
+        mockDomains Order, RecurringOrder
+    }
+
     void "create() success"() {
         given:
         Map<String, String> requestBody = [
@@ -126,5 +134,142 @@ class OrderControllerSpec extends Specification implements ControllerUnitTest<Or
         then:
         response.status == 404
         response.text == "No order found for id: 1"
+    }
+
+    void "scheduleOrders() success"() {
+        given:
+        request.json = [
+            label: "recurring order",
+            customer: "Drew",
+            description: "every meal",
+            schedule: [
+                sunday: [OrderSchedule.DINNER] as Set,
+                monday: [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set,
+                tuesday: [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set,
+                wednesday: [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set,
+                thursday: [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set,
+                friday: [OrderSchedule.BREAKFAST] as Set
+            ]
+        ]
+
+        when:
+        controller.scheduleOrders()
+
+        then:
+        RecurringOrder ro = RecurringOrder.findById("1")
+
+        ro.label == "recurring order"
+        ro.customer == "Drew"
+        ro.description == "every meal"
+        ro.orderSchedule.sunday == ["Dinner"] as Set
+        ro.orderSchedule.monday == ["Breakfast", "Lunch", "Dinner"] as Set
+        ro.orderSchedule.tuesday == ["Breakfast", "Lunch", "Dinner"] as Set
+        ro.orderSchedule.wednesday == ["Breakfast", "Lunch", "Dinner"] as Set
+        ro.orderSchedule.thursday == ["Breakfast", "Lunch", "Dinner"] as Set
+        ro.orderSchedule.friday == ["Breakfast"] as Set
+    }
+
+    void "test scheduleOrders() success without description"() {
+        given:
+        request.json = [
+            label: "recurring order",
+            customer: "Drew",
+            schedule: [
+                sunday: [OrderSchedule.DINNER] as Set,
+                monday: [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set,
+                tuesday: [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set,
+                wednesday: [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set,
+                thursday: [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set,
+                friday: [OrderSchedule.BREAKFAST] as Set
+            ]
+        ]
+
+        when:
+        controller.scheduleOrders()
+
+        then:
+        RecurringOrder ro = RecurringOrder.findById("1")
+
+        ro.label == "recurring order"
+        ro.customer == "Drew"
+        ro.orderSchedule.sunday == ["Dinner"] as Set
+        ro.orderSchedule.monday == ["Breakfast", "Lunch", "Dinner"] as Set
+        ro.orderSchedule.tuesday == ["Breakfast", "Lunch", "Dinner"] as Set
+        ro.orderSchedule.wednesday == ["Breakfast", "Lunch", "Dinner"] as Set
+        ro.orderSchedule.thursday == ["Breakfast", "Lunch", "Dinner"] as Set
+        ro.orderSchedule.friday == ["Breakfast"] as Set
+        !ro.description
+    }
+
+    void "test scheduleOrders() success with some empty days"() {
+        given:
+        request.json = [
+            label: "recurring order",
+            customer: "Drew",
+            schedule: [
+                sunday: [OrderSchedule.DINNER] as Set,
+                monday: [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set,
+                tuesday: [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set,
+                wednesday: [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set,
+                thursday: [OrderSchedule.BREAKFAST, OrderSchedule.DINNER] as Set
+            ]
+        ]
+
+        when:
+        controller.scheduleOrders()
+
+        then:
+        RecurringOrder ro = RecurringOrder.findById("1")
+
+        ro.label == "recurring order"
+        ro.customer == "Drew"
+        ro.orderSchedule.sunday == ["Dinner"] as Set
+        ro.orderSchedule.monday == ["Breakfast", "Lunch", "Dinner"] as Set
+        ro.orderSchedule.tuesday == ["Breakfast", "Lunch", "Dinner"] as Set
+        ro.orderSchedule.wednesday == ["Breakfast", "Lunch", "Dinner"] as Set
+        ro.orderSchedule.thursday == ["Breakfast", "Dinner"] as Set
+        !ro.orderSchedule.friday
+        !ro.description
+    }
+
+    void "test scheduleOrders() success with no schedule"() {
+        given:
+        request.json = [
+            label: "recurring order",
+            customer: "Drew"
+        ]
+
+        when:
+        controller.scheduleOrders()
+
+        then:
+        RecurringOrder ro = RecurringOrder.findById("1")
+
+        ro.label == "recurring order"
+        ro.customer == "Drew"
+        !ro.description
+        !ro.orderSchedule
+    }
+
+    void "test scheduleOrders() failure for bad schedule format"() {
+        given:
+        request.json = [
+            label: "recurring order",
+            customer: "Drew",
+            schedule: [
+                sunday: ["not dinner"]
+            ]
+        ]
+
+        when:
+        controller.scheduleOrders()
+
+        then:
+        RecurringOrder ro = RecurringOrder.findById("1")
+        !ro
+        response.status == 400
+        response.json.errors.size() == 1
+        response.json.errors[0].field == "sunday"
+        response.json.errors[0].value == ["not dinner"]
     }
 }

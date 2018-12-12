@@ -97,7 +97,7 @@ ruleset {
     NoTabCharacter
     ParameterReassignment
     PublicMethodsBeforeNonPublicMethods
-    StaticFieldsBeforeInstanceFields
+    // StaticFieldsBeforeInstanceFields // I prefer having constraints at the top of domain classes
     StaticMethodsBeforeInstanceMethods
     TernaryCouldBeElvis
     // TrailingComma
@@ -178,7 +178,7 @@ ruleset {
     ConsecutiveBlankLines
     // FileEndsWithoutNewline
     Indentation
-    LineLength
+    // LineLength
     MissingBlankLineAfterImports
     MissingBlankLineAfterPackage
     SpaceAfterCatch
