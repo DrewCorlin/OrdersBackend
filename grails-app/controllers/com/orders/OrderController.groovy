@@ -86,12 +86,6 @@ class OrderController extends BaseController {
             return
         }
 
-        // TODO: Figure out why the above call doesn't deep validate
-        if (ro.orderSchedule && !ro.orderSchedule.validate()) {
-            handleValidationErrors(ro.orderSchedule)
-            return
-        }
-
         ro.save(flush: true, failOnError: true)
 
         render text: "Order schedule created: $label"

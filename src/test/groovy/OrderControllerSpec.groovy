@@ -269,7 +269,6 @@ class OrderControllerSpec extends Specification implements ControllerUnitTest<Or
         !ro
         response.status == 400
         response.json.errors.size() == 1
-        response.json.errors[0].field == "sunday"
-        response.json.errors[0].value == ["not dinner"]
+        response.json.errors[0].field == "orderSchedule"
     }
 }

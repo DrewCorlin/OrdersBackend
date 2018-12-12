@@ -6,7 +6,13 @@ class RecurringOrder extends Order {
     static embedded = ['orderSchedule']
 
     static constraints = {
-        orderSchedule nullable: true
+        // TODO: Figure out why grails doesn't deep validate
+        orderSchedule nullable: true, validator: { val ->
+            if (!val) {
+                return true
+            }
+            return val?.validate() ?: false
+        }
     }
 
     OrderSchedule orderSchedule
