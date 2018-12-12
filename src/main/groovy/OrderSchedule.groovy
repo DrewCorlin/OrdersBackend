@@ -7,82 +7,22 @@ class OrderSchedule implements Validateable {
     static final String LUNCH = 'Lunch'
     static final String DINNER = 'Dinner'
 
-    private static final List<String> FULL_DAY = [BREAKFAST, LUNCH, DINNER]
+    private static final List<Set<String>> NORMAL_DAY_OPTIONS = [
+        [BREAKFAST] as Set,
+        [BREAKFAST, LUNCH] as Set,
+        [BREAKFAST, DINNER] as Set,
+        [LUNCH, DINNER] as Set,
+        [BREAKFAST, LUNCH, DINNER] as Set,
+    ]
 
     // TODO: Figure out why I can't create a local Closure or generator method for validator Closure
     static constraints = {
-        sunday validator: { val ->
-            if (!val) {
-                return true
-            }
-            if (!(val instanceof Set) || val.size() > 1) {
-                return false
-            }
-            Set<String> invalidElements = val - [DINNER]
-            if (invalidElements) {
-                return false
-            }
-        }
-        monday validator: { val ->
-            if (!val) {
-                return true
-            }
-            if (!(val instanceof Set) || val.size() > 3) {
-                return false
-            }
-            Set<String> invalidElements = val - FULL_DAY
-            if (invalidElements) {
-                return false
-            }
-        }
-        tuesday validator: { val ->
-            if (!val) {
-                return true
-            }
-            if (!(val instanceof Set) || val.size() > 3) {
-                return false
-            }
-            Set<String> invalidElements = val - FULL_DAY
-            if (invalidElements) {
-                return false
-            }
-        }
-        wednesday validator: { val ->
-            if (!val) {
-                return true
-            }
-            if (!(val instanceof Set) || val.size() > 3) {
-                return false
-            }
-            Set<String> invalidElements = val - FULL_DAY
-            if (invalidElements) {
-                return false
-            }
-        }
-        thursday validator: { val ->
-            if (!val) {
-                return true
-            }
-            if (!(val instanceof Set) || val.size() > 3) {
-                return false
-            }
-            Set<String> invalidElements = val - FULL_DAY
-            if (invalidElements) {
-                return false
-            }
-        }
-        friday validator: { val ->
-            if (!val) {
-                return true
-            }
-            if (!(val instanceof Set) || val.size() > 1) {
-                return false
-            }
-            Set<String> invalidElements = val - [BREAKFAST]
-            if (invalidElements) {
-                return false
-            }
-        }
+        sunday nullable: true, minSize: 1, maxSize: 1, inList: [[DINNER] as Set]
+        monday nullable: true, minSize: 1, maxSize: 3, inList: NORMAL_DAY_OPTIONS
+        tuesday nullable: true, minSize: 1, maxSize: 3, inList: NORMAL_DAY_OPTIONS
+        wednesday nullable: true, minSize: 1, maxSize: 3, inList: NORMAL_DAY_OPTIONS
+        thursday nullable: true, minSize: 1, maxSize: 3, inList: NORMAL_DAY_OPTIONS
+        friday vnullable: true, minSize: 1, maxSize: 1, inList: [[BREAKFAST] as Set]
     }
 
     Set<String> sunday
