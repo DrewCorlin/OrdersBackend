@@ -83,10 +83,16 @@ codenarc {
 
 codenarcMain {
     configFile = file("src/main/groovy/codenarc/selectedRules.groovy")
+    maxPriority1Violations = 0
+    maxPriority2Violations = 10
+    maxPriority3Violations = 25
 }
 
 codenarcTest {
     configFile = file("src/main/groovy/codenarc/selectedTestRules.groovy")
+    maxPriority1Violations = 0
+    maxPriority2Violations = 10
+    maxPriority3Violations = 25
 }
 
 task stage(dependsOn: ['test', 'build', 'clean'])

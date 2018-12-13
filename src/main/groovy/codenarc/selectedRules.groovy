@@ -93,7 +93,7 @@ ruleset {
         doNotApplyToClassNames = "*Controller"
     }
     // NoDef // Would be nice for only arguments, but for controller methods and autowiring it's annoying
-    NoJavaUtilDate
+    // NoJavaUtilDate
     NoTabCharacter
     ParameterReassignment
     PublicMethodsBeforeNonPublicMethods

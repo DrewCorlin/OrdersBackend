@@ -29,6 +29,7 @@ endpoints:
 app:
     environment:
         adminClearanceLevel: '${ADMIN_LEVEL_CLEARANCE}'
+        timezone: 'EST'
 
 ---
 grails:

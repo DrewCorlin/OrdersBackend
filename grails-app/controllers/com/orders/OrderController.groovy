@@ -1,10 +1,14 @@
 package com.orders
 
 import grails.converters.JSON
+import org.springframework.beans.factory.annotation.Value
 
 import com.orders.embedded.OrderSchedule
 
 class OrderController extends BaseController {
+
+    @Value('${app.environment.timezone}')
+    String timezone
 
     private static final Map<Integer, String> DAYS = [
         1: 'sunday',
@@ -45,12 +49,17 @@ class OrderController extends BaseController {
     def orders() {
         List<Order> orders = Order.findAll()
 
+        // TODO: Adjust for current timezone
         String day = DAYS[new Date()[Calendar.DAY_OF_WEEK]]
 
-        String currentMeal = getCurrentMeal()
+        String currentMeal = currentMeal()
 
-        List<RecurringOrder> recurringOrders = RecurringOrder.createCriteria().list {
-            eq "orderSchedule.$day", currentMeal
+        List<RecurringOrder> recurringOrders = []
+
+        if (currentMeal) {
+            recurringOrders = RecurringOrder.createCriteria().list {
+                eq "orderSchedule.$day", currentMeal
+            }
         }
 
         List<Map> response = orders.collect { Order order ->
@@ -122,7 +131,25 @@ class OrderController extends BaseController {
         render text: "Order schedule created: $label"
     }
 
-    private String getCurrentMeal() {
-        return OrderSchedule.BREAKFAST
+    private String currentMeal() {
+        Date date = new Date()
+        TimeZone tz = TimeZone.getTimeZone(timezone)
+        String time = date.format(Constants.TIME_OF_DAY_FORMAT, tz)
+        List<String> times = time.split(':')
+        Integer hour = times[0] as Integer
+
+        // 7:00 - 10:59 is Breakfast
+        // 11:00 - 14:00 is Lunch
+        // 18:00 - 20:00 is Dinner
+
+        if (hour > 7 && hour < 11) {
+            return OrderSchedule.BREAKFAST
+        } else if (hour >= 11 && hour < 14) {
+            return OrderSchedule.LUNCH
+        } else if (hour > 18 && hour < 20) {
+            return OrderSchedule.DINNER
+        }
+
+        return null
     }
 }
