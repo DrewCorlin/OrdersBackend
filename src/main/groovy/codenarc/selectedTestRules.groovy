@@ -177,7 +177,7 @@ ruleset {
     ClosureStatementOnOpeningLineOfMultipleLineClosure
     ConsecutiveBlankLines
     // FileEndsWithoutNewline
-    Indentation
+    // Indentation // Doesn't allow indenting within given/when/then etc blocks
     LineLength
     MissingBlankLineAfterImports
     MissingBlankLineAfterPackage
