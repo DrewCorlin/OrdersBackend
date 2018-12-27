@@ -15,7 +15,7 @@ class UserController extends BaseController {
         String password = request.JSON.password
         List<String> rolesRequested = request.JSON.roles
 
-        List<Role> roles = Role.findAllByLabelInList(rolesRequested)
+        List<Role> roles = Role.findAllByIdInList(rolesRequested)
 
         if (!roles) {
             render status: 400, text: "Must provide roles to update user with"
