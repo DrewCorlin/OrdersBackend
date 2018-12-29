@@ -2,6 +2,7 @@ package com.orders
 
 import org.springframework.security.authentication.encoding.LdapShaPasswordEncoder
 
+// TODO: Put indices on every field we search on
 class User {
 
     static constraints = {
@@ -19,13 +20,17 @@ class User {
     Date lastUpdated
     Date dateCreated
 
-    void setPassword(String newPass) {
+    def setPassword(String newPass) {
+        passwordSecured = hashPassword(newPass, name)
+    }
+
+    static String hashPassword(String pass, String username) {
         LdapShaPasswordEncoder lspe = new LdapShaPasswordEncoder()
-        passwordSecured = lspe.encodePassword(newPass, name as byte[])
+        return lspe.encodePassword(pass, username as byte[])
     }
 
     @Override
     String toString() {
-        return "[id: $id, name: $name, roles: $roles, passwordSecured: $passwordSecured]"
+        return "[id: $id, name: $name, roles: $roles, password: $password, passwordSecured: $passwordSecured]"
     }
 }

@@ -18,7 +18,7 @@ class UserController extends BaseController {
         List<Role> roles = Role.findAllByIdInList(rolesRequested)
 
         if (!roles) {
-            render status: 400, text: "Must provide roles to update user with"
+            render status: 400, text: "No roles found for given ids"
             return
         }
 
@@ -36,7 +36,7 @@ class UserController extends BaseController {
 
     def delete() {
         String name = request.JSON.name
-        String hashedPass = User.hashPassword(request.JSON.password)
+        String hashedPass = User.hashPassword(request.JSON.password, name)
         User user = User.findByNameAndPasswordSecured(name, hashedPass)
 
         if (!user) {
@@ -59,11 +59,15 @@ class UserController extends BaseController {
             return
         }
 
-        List<String> rolesRequested = request.JSON.roles
-        List<Role> roles = Role.findAllByLabelInList(rolesRequested)
+        List<Role> roles = Role.findAllByIdInList(request.JSON.roles)
 
         if (!roles) {
             render status: 400, text: "Roles must not be empty"
+            return
+        }
+
+        if (roles*.id.size() != request.JSON.roles.size()) {
+            render status: 400, text: "Invalid roles requested"
             return
         }
 
@@ -74,7 +78,7 @@ class UserController extends BaseController {
             return
         }
 
-        user.save(flush: true, failOnError: false)
+        user.save(flush: true, failOnError: true)
         render text: "Updated roles for user $id"
     }
 
