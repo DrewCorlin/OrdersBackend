@@ -2,7 +2,6 @@ package com.orders
 
 import grails.converters.JSON
 
-//TODO: Update roles to be real Role domain object, not string
 class UserController implements BaseController {
     def create() {
         String name = request.JSON.name
