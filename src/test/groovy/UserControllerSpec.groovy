@@ -45,7 +45,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
 
     void "create() validation failure"() {
         given:
-            request.json = [roles:['1']]
+            request.json = [roles: ['1']]
             Role role = new Role([
                 label: 'default user'
             ])

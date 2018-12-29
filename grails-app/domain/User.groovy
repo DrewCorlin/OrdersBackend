@@ -20,13 +20,13 @@ class User {
     Date lastUpdated
     Date dateCreated
 
-    def setPassword(String newPass) {
-        passwordSecured = hashPassword(newPass, name)
-    }
-
     static String hashPassword(String pass, String username) {
         LdapShaPasswordEncoder lspe = new LdapShaPasswordEncoder()
         return lspe.encodePassword(pass, username as byte[])
+    }
+
+    void setPassword(String newPass) {
+        passwordSecured = hashPassword(newPass, name)
     }
 
     @Override
