@@ -2,7 +2,7 @@ package com.orders
 
 import grails.converters.JSON
 
-class MealController extends BaseController {
+class MealController implements BaseController {
     def create() {
         String label = request.JSON.label
         String description = request.JSON.description

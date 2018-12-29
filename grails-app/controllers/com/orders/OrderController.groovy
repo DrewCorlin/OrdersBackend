@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value
 
 import com.orders.embedded.OrderSchedule
 
-class OrderController extends BaseController {
+class OrderController implements BaseController {
 
     @Value('${app.environment.timezone}')
     String timezone

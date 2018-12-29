@@ -2,7 +2,7 @@ package com.orders
 
 import grails.converters.JSON
 
-abstract class BaseController {
+trait BaseController {
     def handleException(Exception e) {
         log.error "message='Unexpected server error'", e
         render status: 500, text: "Unexpected server error"
