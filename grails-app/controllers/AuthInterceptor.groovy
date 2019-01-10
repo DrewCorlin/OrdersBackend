@@ -8,7 +8,7 @@ class AuthInterceptor {
     }
 
     boolean before() {
-        String authToken = request.getHeader("authentication")
+        String authToken = request.getHeader("X-Auth-Token")
         String userId = request.getHeader("X-User-ID")
         User user = User.get(userId)
         if (!user) {
