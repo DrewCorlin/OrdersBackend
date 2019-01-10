@@ -3,7 +3,6 @@ package com.orders
 import org.springframework.security.authentication.encoding.LdapShaPasswordEncoder
 import java.security.SecureRandom
 
-// TODO: Put indices on every field we search on
 class User {
 
     private static final String AVAILABLE_CHARACTERS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_+=*/'
