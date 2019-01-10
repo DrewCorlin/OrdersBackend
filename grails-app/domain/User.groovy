@@ -14,6 +14,7 @@ class User {
         roles minSize: 1
         passwordSecured nullable: true
         authToken nullable: true
+        authTokenRefreshed nullable: true
     }
 
     String name

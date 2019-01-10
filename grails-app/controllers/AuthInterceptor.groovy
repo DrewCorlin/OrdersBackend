@@ -4,6 +4,7 @@ class AuthInterceptor {
 
     AuthInterceptor() {
         matchAll().excludes(controller: "user", action: "login")
+                  .excludes(controller: "user", action: "create")
     }
 
     boolean before() {
