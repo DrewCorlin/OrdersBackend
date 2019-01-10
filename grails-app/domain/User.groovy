@@ -17,6 +17,11 @@ class User {
         authTokenRefreshed nullable: true
     }
 
+    static mapping = {
+        name index: true
+        compoundIndex name: 1, passwordSecured: 1
+    }
+
     String name
     List<String> roles = []
     transient String password
