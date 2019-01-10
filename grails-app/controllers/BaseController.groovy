@@ -30,4 +30,8 @@ trait BaseController {
         }
         render status: 400, text: response as JSON
     }
+
+    String userId() {
+        return request.getHeader("X-User-ID")
+    }
 }

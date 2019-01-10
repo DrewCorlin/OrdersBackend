@@ -3,11 +3,7 @@ package com.orders
 class UrlMappings {
 
     static mappings = {
-        "/$controller/$action?/$id?(.$format)?" {
-            constraints {
-                // apply constraints here
-            }
-        }
+        "/$controller/$action?/$id?(.$format)?" { }
 
         "/orders" (controller: "order") {
             action = [GET: "orders", POST: "create"]
@@ -39,6 +35,14 @@ class UrlMappings {
 
         "/user/$id/roles" (controller: "user") {
             action = [PUT: "updateRoles"]
+        }
+
+        "/user/login" (controller: "user") {
+            action = [POST: "login"]
+        }
+
+        "/user/$id/logout" (controller: "user") {
+            action = [POST: "logout"]
         }
     }
 }

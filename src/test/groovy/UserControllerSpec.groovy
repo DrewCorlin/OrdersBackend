@@ -14,7 +14,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
     void "create() success"() {
         given:
             request.json = [
-                name: 'Drew C',
+                username: 'Drew C',
                 password: 'password123',
                 roles: ['1']
             ]
@@ -32,7 +32,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
     void "create() failure on no roles found for given ids"() {
         given:
             request.json = [
-                name: 'Drew C',
+                username: 'Drew C',
                 password: 'password123',
                 roles: ['1']
             ]
@@ -82,7 +82,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
             ])
             role.save(flush: true, failOnError: true)
             request.json = [
-                name: "Drew C",
+                username: "Drew C",
                 password: "password123"
             ]
         when:
@@ -96,7 +96,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
     void "delete() failure on bad id"() {
         given:
             request.json = [
-                name: "Drew C",
+                username: "Drew C",
                 password: "password123"
             ]
         when:
