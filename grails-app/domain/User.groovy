@@ -22,7 +22,7 @@ class User {
     }
 
     String name
-    List<String> roles = []
+    Set<String> roles = []
     transient String password
     String passwordSecured
     String authToken

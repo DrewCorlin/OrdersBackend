@@ -1,6 +1,11 @@
 package com.orders
 
 class Role {
+
+    static mapping = {
+        label index: true
+    }
+
     String label
 
     String id

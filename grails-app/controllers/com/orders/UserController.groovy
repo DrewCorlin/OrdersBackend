@@ -12,17 +12,19 @@ class UserController implements BaseController {
         }
 
         String password = request.JSON.password
-        List<String> rolesRequested = request.JSON.roles
+        Set<String> rolesRequested = request.JSON.roles as Set<String>
 
-        // TODO: Default to customer role
-        List<Role> roles = Role.findAllByIdInList(rolesRequested)
+        Set<Role> roles = Role.findAllByIdInList(rolesRequested) as Set<Role>
 
-        if (!roles) {
-            render status: 400, text: "No roles found for given ids"
-            return
+        Role customer = Role.findByLabel(Constants.CUSTOMER_ROLE_LABEL)
+
+        if (!customer) {
+            throw new Exception("Customer role not found")
         }
 
-        List<String> roleIds = roles*.id
+        roles << customer
+
+        Set<String> roleIds = roles*.id
         User user = new User(name: name, password: password, roles: roleIds)
 
         if (!user.validate()) {

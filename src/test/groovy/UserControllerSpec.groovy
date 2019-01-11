@@ -19,7 +19,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
                 roles: ['1']
             ]
             Role role = new Role([
-                label: 'default user'
+                label: Constants.CUSTOMER_ROLE_LABEL
             ])
             role.save(flush: true, failOnError: true)
         when:
@@ -27,9 +27,13 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
         then:
             response.status == 200
             response.text == "Created user: Drew C"
+        when:
+            User user = User.findById("1")
+        then:
+            user.roles == ["1"] as Set<String>
     }
 
-    void "create() failure on no roles found for given ids"() {
+    void "create() failure for no customer role"() {
         given:
             request.json = [
                 username: 'Drew C',
@@ -39,15 +43,14 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
         when:
             controller.create()
         then:
-            response.status == 400
-            response.text == "No roles found for given ids"
+            response.status == 500 // Exception will be caught and 500 rendered
     }
 
     void "create() validation failure"() {
         given:
             request.json = [roles: ['1']]
             Role role = new Role([
-                label: 'default user'
+                label: Constants.CUSTOMER_ROLE_LABEL
             ])
             role.save(flush: true, failOnError: true)
         when:
@@ -130,7 +133,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
             controller.updateRoles()
             user = User.findById("1")
         then:
-            user.roles == ["1", "2"]
+            user.roles == ["1", "2"] as Set<String>
             response.status == 200
             response.text == "Updated roles for user 1"
     }
