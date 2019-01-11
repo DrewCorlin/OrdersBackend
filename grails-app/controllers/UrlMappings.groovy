@@ -25,7 +25,7 @@ class UrlMappings {
             action = [GET: "meal", DELETE: "delete"]
         }
 
-        "/user" (controller: "user") {
+        "/users" (controller: "user") {
             action = [POST: "create"]
         }
 
@@ -34,7 +34,7 @@ class UrlMappings {
         }
 
         "/user/$id/roles" (controller: "user") {
-            action = [PUT: "updateRoles"]
+            action = [GET: "userRoles", PUT: "updateRoles"]
         }
 
         "/user/login" (controller: "user") {

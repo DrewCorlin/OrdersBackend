@@ -11,12 +11,15 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
         mockDomains User, Role
     }
 
+    void setup() {
+        new Role(label: Constants.CHEF_ROLE_LABEL).save(flush: true, failOnError: true)
+    }
+
     void "create() success"() {
         given:
             request.json = [
                 username: 'Drew C',
-                password: 'password123',
-                roles: ['1']
+                password: 'password123'
             ]
             Role role = new Role([
                 label: Constants.CUSTOMER_ROLE_LABEL
@@ -30,7 +33,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
         when:
             User user = User.findById("1")
         then:
-            user.roles == ["1"] as Set<String>
+            user.roles == ["2"] as Set<String>
     }
 
     void "create() failure for no customer role"() {
@@ -81,7 +84,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
             user.save(flush: true, failOnError: true)
 
             Role role =  new Role([
-                label: "customer"
+                label: Constants.CUSTOMER_ROLE_LABEL
             ])
             role.save(flush: true, failOnError: true)
             request.json = [
@@ -121,12 +124,8 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
                 roles: ["1"]
             ])
             user.save(flush: true, failOnError: true)
-            Role chef = new Role([
-                label: "chef"
-            ])
-            chef.save(flush: true, failOnError: true)
             Role customer = new Role([
-                label: "customer"
+                label: Constants.CUSTOMER_ROLE_LABEL
             ])
             customer.save(flush: true, failOnError: true)
         when:
@@ -150,10 +149,6 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
                 roles: ["1"]
             ])
             user.save(flush: true, failOnError: true)
-            Role chef = new Role([
-                label: "chef"
-            ])
-            chef.save(flush: true, failOnError: true)
         when:
             controller.updateRoles()
             user = User.findById("1")
@@ -164,14 +159,30 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
 
     void "test roles()"() {
         given:
-            new Role(label: "chef").save(flush: true, failOnError: true)
-            new Role(label: "customer").save(flush: true, failOnError: true)
+            new Role(label: Constants.CUSTOMER_ROLE_LABEL).save(flush: true, failOnError: true)
+            new Role(label: Constants.ADMIN_ROLE_LABEL).save(flush: true, failOnError: true)
         when:
             controller.roles()
         then:
             response.status == 200
+            response.json.size() == 3
+            response.json.contains([label: Constants.CHEF_ROLE_LABEL, id: "1"])
+            response.json.contains([label: Constants.CUSTOMER_ROLE_LABEL, id: "2"])
+            response.json.contains([label: Constants.ADMIN_ROLE_LABEL, id: "3"])
+    }
+
+    void "test userRoles() success"() {
+        given:
+            new Role(label: Constants.CUSTOMER_ROLE_LABEL).save(flush: true, failOnError: true)
+            new Role(label: Constants.ADMIN_ROLE_LABEL).save(flush: true, failOnError: true)
+            new User([name: "Drew C", password: "password123", roles: ["1", "2"]]).save(flush: true, failOnError: true)
+            params.id = "1"
+        when:
+            controller.userRoles()
+        then:
+            response.status == 200
             response.json.size() == 2
-            response.json.contains([label: "chef", id: "1"])
-            response.json.contains([label: "customer", id: "2"])
+            response.json.contains([id: "1", label: Constants.CHEF_ROLE_LABEL])
+            response.json.contains([id: "2", label: Constants.CUSTOMER_ROLE_LABEL])
     }
 }

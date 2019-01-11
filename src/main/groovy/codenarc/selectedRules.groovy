@@ -159,7 +159,7 @@ ruleset {
     // ReturnNullFromCatchBlock
     SwallowThreadDeath
     ThrowError
-    ThrowException
+    // ThrowException
     ThrowNullPointerException
     ThrowRuntimeException
     ThrowThrowable

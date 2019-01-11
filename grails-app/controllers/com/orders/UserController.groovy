@@ -3,6 +3,7 @@ package com.orders
 import grails.converters.JSON
 
 class UserController implements BaseController {
+
     def create() {
         String name = request.JSON.username
 
@@ -125,6 +126,21 @@ class UserController implements BaseController {
 
     def roles() {
         List<Role> roles = Role.findAll()
+        render roles.collect { Role role ->
+            [
+                id: role.id,
+                label: role.label
+            ]
+        } as JSON
+    }
+
+    def userRoles() {
+        User user = User.get(params.id)
+        if (!user) {
+            render status: 404, text: "No user found for id $params.id"
+            return
+        }
+        List<Role> roles = Role.findAllByIdInList(user.roles)
         render roles.collect { Role role ->
             [
                 id: role.id,

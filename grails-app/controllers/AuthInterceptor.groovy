@@ -2,6 +2,9 @@ package com.orders
 
 class AuthInterceptor {
 
+    private static final String AUTH_TOKEN_HEADER_FIELD = "X-Auth-Token"
+
+    @SuppressWarnings("DuplicateStringLiteral")
     AuthInterceptor() {
         matchAll().excludes(controller: "user", action: "login")
                   .excludes(controller: "user", action: "create")
@@ -15,7 +18,7 @@ class AuthInterceptor {
             render status: 404 // Is this necessary?
             return false
         }
-        String authToken = request.getHeader("X-Auth-Token")
+        String authToken = request.getHeader(AUTH_TOKEN_HEADER_FIELD)
         if (user.authToken != authToken || (user.authTokenRefreshed + 1 < new Date())) {
             log.error "message='Invalid authentication' | authToken=$authToken | user=$userId"
             render status: 404 // Is this necessary?
@@ -23,7 +26,7 @@ class AuthInterceptor {
         }
         user.authTokenRefreshed = new Date()
         user.save()
-        header "X-Auth-Token", authToken
+        header(AUTH_TOKEN_HEADER_FIELD, authToken)
         return true
     }
 }
