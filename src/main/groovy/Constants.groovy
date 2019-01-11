@@ -5,4 +5,5 @@ class Constants {
     static final String TIME_OF_DAY_FORMAT = "HH:mm:ss"
     static final CHEF_ROLE_LABEL = "CHEF"
     static final CUSTOMER_ROLE_LABEL = "CUSTOMER"
+    static final ADMIN_ROLE_LABEL = "ADMIN"
 }
