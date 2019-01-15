@@ -103,13 +103,11 @@ class OrderController implements BaseController {
     }
 
     def scheduleOrders() {
-        String label = request.JSON.label
         String customer = request.JSON.customer
         String description = request.JSON.description
         Map<String, Set<String>> schedule = request.JSON.schedule
 
         RecurringOrder ro = new RecurringOrder([
-            label: label,
             customer: customer
         ])
 
@@ -128,7 +126,7 @@ class OrderController implements BaseController {
 
         ro.save(flush: true, failOnError: true)
 
-        render text: "Order schedule created: $label"
+        render text: "Order schedule created"
     }
 
     private String currentMeal() {

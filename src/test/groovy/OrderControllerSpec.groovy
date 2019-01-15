@@ -125,7 +125,6 @@ class OrderControllerSpec extends Specification implements ControllerUnitTest<Or
     void "scheduleOrders() success"() {
         given:
             request.json = [
-                label: "recurring order",
                 customer: "Drew",
                 description: "every meal",
                 schedule: [
@@ -142,21 +141,19 @@ class OrderControllerSpec extends Specification implements ControllerUnitTest<Or
         then:
             RecurringOrder ro = RecurringOrder.findById("1")
 
-            ro.label == "recurring order"
             ro.customer == "Drew"
             ro.description == "every meal"
-            ro.orderSchedule.sunday == ["Dinner"] as Set
-            ro.orderSchedule.monday == ["Breakfast", "Lunch", "Dinner"] as Set
-            ro.orderSchedule.tuesday == ["Breakfast", "Lunch", "Dinner"] as Set
-            ro.orderSchedule.wednesday == ["Breakfast", "Lunch", "Dinner"] as Set
-            ro.orderSchedule.thursday == ["Breakfast", "Lunch", "Dinner"] as Set
-            ro.orderSchedule.friday == ["Breakfast"] as Set
+            ro.orderSchedule.sunday == [OrderSchedule.DINNER] as Set
+            ro.orderSchedule.monday == [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set
+            ro.orderSchedule.tuesday == [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set
+            ro.orderSchedule.wednesday == [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set
+            ro.orderSchedule.thursday == [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set
+            ro.orderSchedule.friday == [OrderSchedule.BREAKFAST] as Set
     }
 
     void "test scheduleOrders() success without description"() {
         given:
             request.json = [
-                label: "recurring order",
                 customer: "Drew",
                 schedule: [
                     sunday: [OrderSchedule.DINNER] as Set,
@@ -172,21 +169,19 @@ class OrderControllerSpec extends Specification implements ControllerUnitTest<Or
         then:
             RecurringOrder ro = RecurringOrder.findById("1")
 
-            ro.label == "recurring order"
             ro.customer == "Drew"
-            ro.orderSchedule.sunday == ["Dinner"] as Set
-            ro.orderSchedule.monday == ["Breakfast", "Lunch", "Dinner"] as Set
-            ro.orderSchedule.tuesday == ["Breakfast", "Lunch", "Dinner"] as Set
-            ro.orderSchedule.wednesday == ["Breakfast", "Lunch", "Dinner"] as Set
-            ro.orderSchedule.thursday == ["Breakfast", "Lunch", "Dinner"] as Set
-            ro.orderSchedule.friday == ["Breakfast"] as Set
+            ro.orderSchedule.sunday == [OrderSchedule.DINNER] as Set
+            ro.orderSchedule.monday == [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set
+            ro.orderSchedule.tuesday == [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set
+            ro.orderSchedule.wednesday == [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set
+            ro.orderSchedule.thursday == [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set
+            ro.orderSchedule.friday == [OrderSchedule.BREAKFAST] as Set
             !ro.description
     }
 
     void "test scheduleOrders() success with some empty days"() {
         given:
             request.json = [
-                label: "recurring order",
                 customer: "Drew",
                 schedule: [
                     sunday: [OrderSchedule.DINNER] as Set,
@@ -201,13 +196,12 @@ class OrderControllerSpec extends Specification implements ControllerUnitTest<Or
         then:
             RecurringOrder ro = RecurringOrder.findById("1")
 
-            ro.label == "recurring order"
             ro.customer == "Drew"
-            ro.orderSchedule.sunday == ["Dinner"] as Set
-            ro.orderSchedule.monday == ["Breakfast", "Lunch", "Dinner"] as Set
-            ro.orderSchedule.tuesday == ["Breakfast", "Lunch", "Dinner"] as Set
-            ro.orderSchedule.wednesday == ["Breakfast", "Lunch", "Dinner"] as Set
-            ro.orderSchedule.thursday == ["Breakfast", "Dinner"] as Set
+            ro.orderSchedule.sunday == [OrderSchedule.DINNER] as Set
+            ro.orderSchedule.monday == [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set
+            ro.orderSchedule.tuesday == [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set
+            ro.orderSchedule.wednesday == [OrderSchedule.BREAKFAST, OrderSchedule.LUNCH, OrderSchedule.DINNER] as Set
+            ro.orderSchedule.thursday == [OrderSchedule.BREAKFAST, OrderSchedule.DINNER] as Set
             !ro.orderSchedule.friday
             !ro.description
     }
@@ -215,7 +209,6 @@ class OrderControllerSpec extends Specification implements ControllerUnitTest<Or
     void "test scheduleOrders() success with no schedule"() {
         given:
             request.json = [
-                label: "recurring order",
                 customer: "Drew"
             ]
         when:
@@ -223,7 +216,6 @@ class OrderControllerSpec extends Specification implements ControllerUnitTest<Or
         then:
             RecurringOrder ro = RecurringOrder.findById("1")
 
-            ro.label == "recurring order"
             ro.customer == "Drew"
             !ro.description
             !ro.orderSchedule

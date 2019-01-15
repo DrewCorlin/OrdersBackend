@@ -3,9 +3,9 @@ package com.orders.embedded
 import grails.validation.Validateable
 
 class OrderSchedule implements Validateable {
-    static final String BREAKFAST = 'Breakfast'
-    static final String LUNCH = 'Lunch'
-    static final String DINNER = 'Dinner'
+    static final String BREAKFAST = 'breakfast'
+    static final String LUNCH = 'lunch'
+    static final String DINNER = 'dinner'
 
     private static final List<Set<String>> NORMAL_DAY_OPTIONS = [
         [BREAKFAST] as Set,

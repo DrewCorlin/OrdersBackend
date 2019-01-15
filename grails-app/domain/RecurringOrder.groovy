@@ -17,7 +17,6 @@ class RecurringOrder {
         description nullable: true
     }
 
-    String label
     String customer
     String description
     OrderSchedule orderSchedule
@@ -30,7 +29,6 @@ class RecurringOrder {
         // TODO: Don't add fields if they have null values
         return [
             id: id,
-            label: label,
             customer: customer,
             description: description,
             orderSchedule: orderSchedule.toString()
